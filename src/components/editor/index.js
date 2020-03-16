@@ -4,12 +4,9 @@ import { Range } from 'monaco-editor';
 
 // import { Container } from './styles';
 
-const seed =`
-{
-    "p1": "v3",
-    "p2": false
-}
-`;
+const seed = `<div>
+
+</div>`;
 
 const Editor = () => {
   const [code] = useState(seed);
@@ -19,45 +16,33 @@ const Editor = () => {
     selectOnLineNumbers: true,
   };
 
-  const editorDidMount = (editor, monaco)  =>{
-    // configure the JSON language support with schemas and schema associations
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      enableSchemaRequest: true,
+  const editorDidMount = (editor,monaco) => {
+    console.log(monaco)
+    monaco.languages.html.htmlDefaults.setOptions({
       validate: true,
-      allowComments: true,
-      schemas: [{
-          uri: "http://myserver/foo-schema.json", // id of the first schema
-          fileMatch: ['*'], // associate with our model
-          schema: {
-              type: "object",
-              properties: {
-                  p1: {
-                      enum: ["v1", "v2"]
-                  },
-                  p2: {
-                      $ref: "http://myserver/bar-schema.json" // reference the second schema
-                  }
-              }
-          }
-      }, {
-          uri: "http://myserver/bar-schema.json", // id of the first schema
-          schema: {
-              type: "object",
-              properties: {
-                  q1: {
-                      enum: ["x1", "x2"]
-                  }
-              }
-          }
-      }]
+      format: {
+        tabSize: 2,
+        insertSpaces: false,
+        wrapLineLength: 120,
+        indentInnerHtml: true,
+        preserveNewLines: true,
+        maxPreserveNewLines: null,
+        indentHandlebars: false,
+        endWithNewline: false,
+        extraLiners: 'head, body, /html',
+        wrapAttributes: 'auto',
+      },
+      suggest: {
+        html5: true,
+      },
     });
-  }
+  };
 
   return (
     <MonacoEditor
       width="800"
       height="600"
-      language="json"
+      language="html"
       theme="vs-dark"
       value={code}
       options={options}
